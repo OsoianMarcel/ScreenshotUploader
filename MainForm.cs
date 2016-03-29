@@ -132,7 +132,7 @@ namespace App
                         this.imageListBoxSelectAll();
                         break;
                 }
-            }      
+            }
         }
 
         // Listbox mouse up event
@@ -269,7 +269,8 @@ namespace App
         }
 
         // Copy string to clipboard
-        private void copyStringToClipboard(string text) {
+        private void copyStringToClipboard(string text)
+        {
             try
             {
                 Clipboard.SetDataObject(text, true, 2, 50);
