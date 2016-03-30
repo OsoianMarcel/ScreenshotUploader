@@ -112,40 +112,44 @@ namespace App
         // Listbox key up event
         private void imageListBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Control)
+            if (!e.Control)
             {
-                switch (e.KeyCode)
-                {
-                    case Keys.C:
-                        this.imageListBoxCopySelectedToClipboard();
-                        break;
-                    case Keys.B:
-                        this.imageListBoxCopySelectedToClipboard(MenuCopyAs.BBCode);
-                        break;
-                    case Keys.H:
-                        this.imageListBoxCopySelectedToClipboard(MenuCopyAs.HTML);
-                        break;
-                    case Keys.D:
-                        this.imageListBoxRemoveSelected();
-                        break;
-                    case Keys.A:
-                        this.imageListBoxSelectAll();
-                        break;
-                }
+                return;
             }
+
+            switch (e.KeyCode)
+            {
+                case Keys.C:
+                    this.imageListBoxCopySelectedToClipboard();
+                    break;
+                case Keys.B:
+                    this.imageListBoxCopySelectedToClipboard(MenuCopyAs.BBCode);
+                    break;
+                case Keys.H:
+                    this.imageListBoxCopySelectedToClipboard(MenuCopyAs.HTML);
+                    break;
+                case Keys.D:
+                    this.imageListBoxRemoveSelected();
+                    break;
+                case Keys.A:
+                    this.imageListBoxSelectAll();
+                    break;
+            }
+
         }
 
         // Listbox mouse up event
         private void imageListBox_MouseUp(object sender, MouseEventArgs e)
         {
-            // Check if it right click
+            // Check if it is right click
             if (e.Button != MouseButtons.Right)
             {
                 return;
             }
 
-            // Check if some items are selected
             int clickedIndex = this.imageListBox.IndexFromPoint(e.Location);
+
+            // Check if some items are selected
             if (clickedIndex == ListBox.NoMatches)
             {
                 this.imageListContextMenuStrip.Visible = false;
@@ -174,6 +178,16 @@ namespace App
             }
 
             System.Diagnostics.Process.Start((string)this.imageListBox.SelectedItem);
+        }
+
+        // StripMenu Event: Opening
+        private void imageListContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            if (imageListBox.SelectedItems.Count == 0)
+            {
+                e.Cancel = true;
+                return;
+            }
         }
 
         // StripMenu: Copy

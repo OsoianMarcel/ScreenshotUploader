@@ -83,7 +83,7 @@
             this.imageListBox.Name = "imageListBox";
             this.imageListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.imageListBox.Size = new System.Drawing.Size(248, 147);
-            this.imageListBox.TabIndex = 3;
+            this.imageListBox.TabIndex = 2;
             this.imageListBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.imageListBox_KeyUp);
             this.imageListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.imageListBox_MouseDoubleClick);
             this.imageListBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imageListBox_MouseUp);
@@ -99,6 +99,7 @@
             this.selectAllToolStripMenuItem});
             this.imageListContextMenuStrip.Name = "imageListContextMenuStrip";
             this.imageListContextMenuStrip.Size = new System.Drawing.Size(212, 120);
+            this.imageListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.imageListContextMenuStrip_Opening);
             // 
             // copyToolStripMenuItem
             // 
@@ -156,7 +157,7 @@
             this.helpButton.Location = new System.Drawing.Point(492, 12);
             this.helpButton.Name = "helpButton";
             this.helpButton.Size = new System.Drawing.Size(24, 23);
-            this.helpButton.TabIndex = 5;
+            this.helpButton.TabIndex = 4;
             this.helpButton.UseVisualStyleBackColor = true;
             this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
             // 
@@ -166,7 +167,7 @@
             this.settingButton.Location = new System.Drawing.Point(267, 12);
             this.settingButton.Name = "settingButton";
             this.settingButton.Size = new System.Drawing.Size(24, 23);
-            this.settingButton.TabIndex = 4;
+            this.settingButton.TabIndex = 3;
             this.settingButton.UseVisualStyleBackColor = true;
             this.settingButton.Click += new System.EventHandler(this.settingButton_Click);
             // 
@@ -177,7 +178,7 @@
             this.captureButton.Location = new System.Drawing.Point(297, 12);
             this.captureButton.Name = "captureButton";
             this.captureButton.Size = new System.Drawing.Size(189, 23);
-            this.captureButton.TabIndex = 2;
+            this.captureButton.TabIndex = 0;
             this.captureButton.Text = "Capture screen and upload";
             this.captureButton.UseVisualStyleBackColor = true;
             this.captureButton.Click += new System.EventHandler(this.captureButton_Click);

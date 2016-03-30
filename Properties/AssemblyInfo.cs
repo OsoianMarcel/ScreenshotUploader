@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("App")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("App")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
+[assembly: AssemblyTitle("Screenshot Uploader")]
+[assembly: AssemblyDescription("Simple screenshot uploading tool")]
+[assembly: AssemblyConfiguration("Release")]
+[assembly: AssemblyCompany("OMD")]
+[assembly: AssemblyProduct("Screenshot Uploader")]
+[assembly: AssemblyCopyright("Copyright © Osoian Marcel 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

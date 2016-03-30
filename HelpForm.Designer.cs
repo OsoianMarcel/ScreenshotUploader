@@ -85,9 +85,9 @@
             this.imageUplaoderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.imageUplaoderLabel.Location = new System.Drawing.Point(89, 19);
             this.imageUplaoderLabel.Name = "imageUplaoderLabel";
-            this.imageUplaoderLabel.Size = new System.Drawing.Size(120, 20);
+            this.imageUplaoderLabel.Size = new System.Drawing.Size(157, 20);
             this.imageUplaoderLabel.TabIndex = 17;
-            this.imageUplaoderLabel.Text = "Image uploader";
+            this.imageUplaoderLabel.Text = "Screenshot uploader";
             // 
             // createdByValueLabel
             // 
