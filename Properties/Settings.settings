@@ -2,14 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="App.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="mainFormTitle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Screenshot Uploader</Value>
-    </Setting>
-    <Setting Name="appVersion" Type="System.String" Scope="User">
-      <Value Profile="(Default)">v1.4.2</Value>
-    </Setting>
     <Setting Name="settingIsCopyImageURLToClipboard" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="settingIsLogImageUrls" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="settingLogImageUrlsFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

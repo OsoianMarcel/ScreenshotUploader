@@ -16,8 +16,7 @@ namespace App
             InitializeComponent();
 
             // Set form icon
-            Icon appIcon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            this.Icon = appIcon;
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         }
 
         // Open browser

@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.generalGroupBox = new System.Windows.Forms.GroupBox();
-            this.imageUploaderValueLabel = new System.Windows.Forms.Label();
-            this.imageUplaoderLabel = new System.Windows.Forms.Label();
+            this.screenshotUploaderValueLabel = new System.Windows.Forms.Label();
+            this.screenshotUploaderLabel = new System.Windows.Forms.Label();
             this.createdByValueLabel = new System.Windows.Forms.Label();
             this.createdByLabel = new System.Windows.Forms.Label();
             this.EmailValueLabel = new System.Windows.Forms.TextBox();
@@ -56,8 +56,8 @@
             // 
             // generalGroupBox
             // 
-            this.generalGroupBox.Controls.Add(this.imageUploaderValueLabel);
-            this.generalGroupBox.Controls.Add(this.imageUplaoderLabel);
+            this.generalGroupBox.Controls.Add(this.screenshotUploaderValueLabel);
+            this.generalGroupBox.Controls.Add(this.screenshotUploaderLabel);
             this.generalGroupBox.Controls.Add(this.createdByValueLabel);
             this.generalGroupBox.Controls.Add(this.createdByLabel);
             this.generalGroupBox.Controls.Add(this.EmailValueLabel);
@@ -70,24 +70,24 @@
             this.generalGroupBox.TabStop = false;
             this.generalGroupBox.Text = "General";
             // 
-            // imageUploaderValueLabel
+            // screenshotUploaderValueLabel
             // 
-            this.imageUploaderValueLabel.AutoSize = true;
-            this.imageUploaderValueLabel.Location = new System.Drawing.Point(90, 39);
-            this.imageUploaderValueLabel.Name = "imageUploaderValueLabel";
-            this.imageUploaderValueLabel.Size = new System.Drawing.Size(162, 13);
-            this.imageUploaderValueLabel.TabIndex = 18;
-            this.imageUploaderValueLabel.Text = "Simple screenshot uploading tool";
+            this.screenshotUploaderValueLabel.AutoSize = true;
+            this.screenshotUploaderValueLabel.Location = new System.Drawing.Point(90, 39);
+            this.screenshotUploaderValueLabel.Name = "screenshotUploaderValueLabel";
+            this.screenshotUploaderValueLabel.Size = new System.Drawing.Size(162, 13);
+            this.screenshotUploaderValueLabel.TabIndex = 18;
+            this.screenshotUploaderValueLabel.Text = "Simple screenshot uploading tool";
             // 
-            // imageUplaoderLabel
+            // screenshotUploaderLabel
             // 
-            this.imageUplaoderLabel.AutoSize = true;
-            this.imageUplaoderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.imageUplaoderLabel.Location = new System.Drawing.Point(89, 19);
-            this.imageUplaoderLabel.Name = "imageUplaoderLabel";
-            this.imageUplaoderLabel.Size = new System.Drawing.Size(157, 20);
-            this.imageUplaoderLabel.TabIndex = 17;
-            this.imageUplaoderLabel.Text = "Screenshot uploader";
+            this.screenshotUploaderLabel.AutoSize = true;
+            this.screenshotUploaderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.screenshotUploaderLabel.Location = new System.Drawing.Point(89, 19);
+            this.screenshotUploaderLabel.Name = "screenshotUploaderLabel";
+            this.screenshotUploaderLabel.Size = new System.Drawing.Size(157, 20);
+            this.screenshotUploaderLabel.TabIndex = 17;
+            this.screenshotUploaderLabel.Text = "Screenshot uploader";
             // 
             // createdByValueLabel
             // 
@@ -304,7 +304,7 @@
         private System.Windows.Forms.Label EmailLabel;
         private System.Windows.Forms.Label createdByValueLabel;
         private System.Windows.Forms.Label createdByLabel;
-        private System.Windows.Forms.Label imageUplaoderLabel;
-        private System.Windows.Forms.Label imageUploaderValueLabel;
+        private System.Windows.Forms.Label screenshotUploaderLabel;
+        private System.Windows.Forms.Label screenshotUploaderValueLabel;
     }
 }

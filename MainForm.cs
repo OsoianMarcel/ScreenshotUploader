@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
 
 namespace App
 {
@@ -30,8 +32,7 @@ namespace App
             this.appSettings = App.Properties.Settings.Default;
 
             // Set form icon
-            Icon appIcon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            this.Icon = appIcon;
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 
             // Init upload service
             this.uploadService = new Service.Upload();
@@ -39,8 +40,8 @@ namespace App
             this.uploadService.onError(new Service.Upload.ErrorCallback((string message) => this.Invoke(new OnErrorDelegate(this.onError), message)));
             this.uploadService.onComplete(new Service.Upload.CompleteCallback(() => this.Invoke(new OnCompleteDelegate(this.onComplete))));
 
-            // Set main form title
-            this.Text = this.appSettings.mainFormTitle + " | " + this.appSettings.appVersion;
+            // Append app version to main form
+            this.Text += " | " + Application.ProductVersion;
         }
 
         // Upload: On success
@@ -55,6 +56,13 @@ namespace App
             if (this.appSettings.settingIsCopyImageURLToClipboard)
             {
                 this.copyStringToClipboard(image.image);
+            }
+
+            // Setting: Log image URLs
+            if (this.appSettings.settingIsLogImageUrls)
+            {
+                string append = "[" + DateTime.Now.ToString() + "] " + image.image + Environment.NewLine;
+                File.AppendAllText(this.appSettings.settingLogImageUrlsFile, append);
             }
         }
 
@@ -186,7 +194,6 @@ namespace App
             if (imageListBox.SelectedItems.Count == 0)
             {
                 e.Cancel = true;
-                return;
             }
         }
 

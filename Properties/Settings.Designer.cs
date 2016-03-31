@@ -25,30 +25,6 @@ namespace App.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Screenshot Uploader")]
-        public string mainFormTitle {
-            get {
-                return ((string)(this["mainFormTitle"]));
-            }
-            set {
-                this["mainFormTitle"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("v1.4.2")]
-        public string appVersion {
-            get {
-                return ((string)(this["appVersion"]));
-            }
-            set {
-                this["appVersion"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool settingIsCopyImageURLToClipboard {
             get {
@@ -56,6 +32,30 @@ namespace App.Properties {
             }
             set {
                 this["settingIsCopyImageURLToClipboard"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool settingIsLogImageUrls {
+            get {
+                return ((bool)(this["settingIsLogImageUrls"]));
+            }
+            set {
+                this["settingIsLogImageUrls"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string settingLogImageUrlsFile {
+            get {
+                return ((string)(this["settingLogImageUrlsFile"]));
+            }
+            set {
+                this["settingLogImageUrlsFile"] = value;
             }
         }
     }
