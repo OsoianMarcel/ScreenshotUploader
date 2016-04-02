@@ -78,6 +78,12 @@ namespace App
             this.captureButton.Enabled = true;
             this.uploadProgressBar.MarqueeAnimationSpeed = 0;
             this.uploadProgressBar.Style = ProgressBarStyle.Blocks;
+
+            // Flash form if it is not active
+            if (!this.Focused)
+            {
+                Helpers.FlashWindow.Flash(this);
+            }
         }
 
         // Click capture and upload button
