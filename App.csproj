@@ -65,8 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\FindImage.cs" />
     <Compile Include="Helpers\FlashWindow.cs" />
     <Compile Include="Helpers\Global.cs" />
+    <Compile Include="Helpers\MimeType.cs" />
     <Compile Include="Helpers\Thread.cs" />
     <Compile Include="HelpForm.cs">
       <SubType>Form</SubType>
@@ -80,8 +82,10 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Image.cs" />
-    <Compile Include="Models\Token.cs" />
+    <Compile Include="Models\ImageUpload.cs" />
+    <Compile Include="Models\ImageFile.cs" />
+    <Compile Include="Models\StaticMd\Image.cs" />
+    <Compile Include="Models\StaticMd\Token.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Upload.cs" />

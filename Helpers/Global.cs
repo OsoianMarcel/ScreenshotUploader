@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace App.Helper
+namespace App.Helpers
 {
     public static class Global
     {
-        public static string userAgent = "ImageUploader/1.0 (By OMD)";
+        // User-Agent
+        public static readonly string userAgent = "ImageUploader/1.0 (By OMD)";
+
+        // Accepted image extensions
+        public static readonly string[] acceptedImageExtensions = {
+            "jpg", "jpeg", "jpe", "png", "gif", "ico"
+        };
     }
 }

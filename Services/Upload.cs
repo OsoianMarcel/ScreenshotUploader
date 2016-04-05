@@ -8,24 +8,21 @@ using System.Threading;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace App.Service
 {
     public class Upload
     {
-        public delegate void SuccessCallback(Model.Image image);
+        public delegate void SuccessCallback(Models.StaticMd.Image image);
         public delegate void ErrorCallback(string error);
         public delegate void CompleteCallback();
+        public delegate void ImageCallback(Image image);
 
         private event SuccessCallback successCallback;
         private event ErrorCallback errorCallback;
         private event CompleteCallback completeCallback;
-
-        // Constructor
-        public Upload()
-        {
-
-        }
+        private event ImageCallback imageCallback;
 
         // Add success callback
         public void onSuccess(SuccessCallback callback)
@@ -45,47 +42,107 @@ namespace App.Service
             this.completeCallback += callback;
         }
 
-        // Request by using separate thread
-        public void doRequestAsync(Image image)
+        public void onImage(ImageCallback callback)
         {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(this.doThreadWork), image);
+            this.imageCallback += callback;
         }
 
-        // Request without separate thread
-        public void doRequest(Image image)
+        // Upload image by using separate thread
+        public void uploadImageAsync(Image image)
         {
-            this.doThreadWork(image);
+            ThreadPool.QueueUserWorkItem(q => this.detectThreadWork(image));
         }
+
+        // Upload image without separate thread
+        public void uploadImage(Image image)
+        {
+            this.detectThreadWork(image);
+        }
+
+        // Upload image files by using separate thread
+        public void uploadImageFilesAsync(List<Models.ImageFile> imageFiles)
+        {
+            ThreadPool.QueueUserWorkItem(q => this.detectThreadWork(imageFiles));
+        }
+
+        // Upload image files
+        public void uploadImageFiles(List<Models.ImageFile> imageFiles)
+        {
+            this.detectThreadWork(imageFiles);
+        }
+
+
+        // Detect Image
+        private void detectThreadWork(Image image)
+        {
+            List<Models.ImageUpload> imageUploads = new List<Models.ImageUpload>();
+
+            Models.ImageUpload imageUpload = new Models.ImageUpload();
+            imageUpload.bytes = this.getBytesFromImage(image);
+            imageUpload.mimeType = "image/png";
+
+            if (this.imageCallback != null)
+            {
+                this.imageCallback(image);
+            }
+
+            imageUploads.Add(imageUpload);
+            this.doThreadWork(imageUploads);
+        }
+
+        // Detect ImageFile
+        private void detectThreadWork(List<Models.ImageFile> imageFiles)
+        {
+            List<Models.ImageUpload> imageUploads = new List<Models.ImageUpload>();
+
+            foreach (Models.ImageFile imageFile in imageFiles)
+            {
+                Models.ImageUpload imageUpload = new Models.ImageUpload();
+                imageUpload.bytes = this.getBytesFromPath(imageFile.path);
+                imageUpload.mimeType = imageFile.mimeType;
+                imageUpload.imageFile = imageFile;
+
+                imageUploads.Add(imageUpload);
+            }
+
+            this.doThreadWork(imageUploads);
+        }
+
 
         // Thread work
         private void doThreadWork(object param)
         {
-            Image image = (Image)param;
+            List<Models.ImageUpload> imageUploads = (List<Models.ImageUpload>)param;
 
             try
             {
-                byte[] imageBytes = this.getBytesFromImage(image);
-                string imageMD5 = this.getMD5FromBytes(imageBytes);
-
-                Model.Token token = this.getToken(imageMD5);
-
-                Model.Image upload = this.uploadImage(imageBytes, token);
-                if (upload.error == "")
+                foreach (Models.ImageUpload imageUpload in imageUploads)
                 {
-                    if (this.successCallback != null)
+                    if (this.imageCallback != null && imageUpload.imageFile != null)
                     {
-                        this.successCallback(upload);
+                        this.imageCallback(Image.FromFile(imageUpload.imageFile.path));
+                    }
+
+                    string bytesMd5 = this.getMD5FromBytes(imageUpload.bytes);
+                    Models.StaticMd.Token token = this.getToken(bytesMd5);
+
+                    Models.StaticMd.Image upload = this.uploadImage(token, imageUpload);
+
+                    if (upload.error == "")
+                    {
+                        if (this.successCallback != null)
+                        {
+                            this.successCallback(upload);
+                        }
+                    }
+                    else
+                    {
+                        if (this.errorCallback != null)
+                        {
+                            this.errorCallback(upload.error);
+                        }
                     }
                 }
-                else
-                {
-                    if (this.errorCallback != null)
-                    {
-                        this.errorCallback(upload.error);
-                    }
-                }
-
-
             }
             catch (Exception ex)
             {
@@ -104,7 +161,7 @@ namespace App.Service
         }
 
         // Upload image
-        private Model.Image uploadImage(byte[] bytes, Model.Token token)
+        private Models.StaticMd.Image uploadImage(Models.StaticMd.Token token, Models.ImageUpload imageUpload)
         {
             this.sleepBeforeUpload(token);
 
@@ -117,24 +174,24 @@ namespace App.Service
                 + "Content-Disposition: form-data; name=\"token\"\n\n"
                 + token.token + "\n"
                 + "--" + boundary + "\n"
-                + "Content-Disposition: form-data; name=\"image\"; filename=\"image.png\"\n"
-                + "Content-Type: image/png\n\n";
+                + "Content-Disposition: form-data; name=\"image\"; filename=\"image\"\n"
+                + "Content-Type: " + imageUpload.mimeType + "\n\n";
 
             byte[] postFieldsBytes = Encoding.ASCII.GetBytes(postFields);
             byte[] endBoundaryBytes = Encoding.ASCII.GetBytes("\n--" + boundary + "--");
 
             request.Method = "POST";
             request.ContentType = "multipart/form-data; boundary=" + boundary;
-            request.ContentLength = postFieldsBytes.Length + bytes.Length + endBoundaryBytes.Length;
+            request.ContentLength = postFieldsBytes.Length + imageUpload.bytes.Length + endBoundaryBytes.Length;
 
-            request.UserAgent = Helper.Global.userAgent;
+            request.UserAgent = Helpers.Global.userAgent;
             request.Accept = "application/json";
             request.Headers.Add("Accept-Language", "en");
 
             using (var stream = request.GetRequestStream())
             {
                 stream.Write(postFieldsBytes, 0, postFieldsBytes.Length);
-                stream.Write(bytes, 0, bytes.Length);
+                stream.Write(imageUpload.bytes, 0, imageUpload.bytes.Length);
                 stream.Write(endBoundaryBytes, 0, endBoundaryBytes.Length);
             }
 
@@ -146,15 +203,15 @@ namespace App.Service
         }
 
         // Parse image
-        private Model.Image parseImage(string json)
+        private Models.StaticMd.Image parseImage(string json)
         {
-            Model.Image image = new JavaScriptSerializer().Deserialize<Model.Image>(json);
+            Models.StaticMd.Image image = new JavaScriptSerializer().Deserialize<Models.StaticMd.Image>(json);
 
             return image;
         }
 
         // Get token
-        private Model.Token getToken(string md5)
+        private Models.StaticMd.Token getToken(string md5)
         {
             var request = (HttpWebRequest)WebRequest.Create("https://static.md/api/v2/get-token/");
             request.Proxy = null;
@@ -166,7 +223,7 @@ namespace App.Service
             request.ContentType = "application/x-www-form-urlencoded";
             request.ContentLength = data.Length;
 
-            request.UserAgent = Helper.Global.userAgent;
+            request.UserAgent = Helpers.Global.userAgent;
             request.Accept = "application/json";
             request.Headers.Add("Accept-Language", "en");
 
@@ -183,15 +240,15 @@ namespace App.Service
         }
 
         // Sleep x seconds before upload
-        private void sleepBeforeUpload(Model.Token token)
+        private void sleepBeforeUpload(Models.StaticMd.Token token)
         {
             Thread.Sleep(token.token_valid_after_seconds * 1000);
         }
 
         // Parse token
-        private Model.Token parseToken(string json)
+        private Models.StaticMd.Token parseToken(string json)
         {
-            Model.Token token = new JavaScriptSerializer().Deserialize<Model.Token>(json);
+            Models.StaticMd.Token token = new JavaScriptSerializer().Deserialize<Models.StaticMd.Token>(json);
 
             return token;
         }
@@ -222,6 +279,12 @@ namespace App.Service
             }
 
             return bytes;
+        }
+
+        // Get bytes form path
+        private byte[] getBytesFromPath(string path)
+        {
+            return System.IO.File.ReadAllBytes(path);
         }
     }
 }

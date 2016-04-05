@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Threading = System.Threading;
 
-namespace App.Helper
+namespace App.Helpers
 {
     public static class Thread
     {

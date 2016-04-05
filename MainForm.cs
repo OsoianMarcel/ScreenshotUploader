@@ -13,9 +13,10 @@ namespace App
 {
     public partial class MainForm : Form
     {
-        private delegate void OnSuccessDelegate(Model.Image image);
+        private delegate void OnSuccessDelegate(Models.StaticMd.Image image);
         private delegate void OnErrorDelegate(string message);
         private delegate void OnCompleteDelegate();
+        private delegate void OnImageDelegate(Image image);
 
         private enum MenuCopyAs { Text, BBCode, HTML }
 
@@ -36,16 +37,17 @@ namespace App
 
             // Init upload service
             this.uploadService = new Service.Upload();
-            this.uploadService.onSuccess(new Service.Upload.SuccessCallback((Model.Image image) => this.Invoke(new OnSuccessDelegate(this.onSuccess), image)));
+            this.uploadService.onSuccess(new Service.Upload.SuccessCallback((Models.StaticMd.Image image) => this.Invoke(new OnSuccessDelegate(this.onSuccess), image)));
             this.uploadService.onError(new Service.Upload.ErrorCallback((string message) => this.Invoke(new OnErrorDelegate(this.onError), message)));
             this.uploadService.onComplete(new Service.Upload.CompleteCallback(() => this.Invoke(new OnCompleteDelegate(this.onComplete))));
+            this.uploadService.onImage(new Service.Upload.ImageCallback((Image image) => this.Invoke(new OnImageDelegate(this.onImage), image)));
 
             // Append app version to main form
             this.Text += " | " + Application.ProductVersion;
         }
 
         // Upload: On success
-        private void onSuccess(Model.Image image)
+        private void onSuccess(Models.StaticMd.Image image)
         {
             this.imageListBox.Items.Add(image.image);
             this.imageListBox.ClearSelected();
@@ -75,9 +77,46 @@ namespace App
         // Upload: On complete
         private void onComplete()
         {
+            this.uiFinishUpload();
+        }
+
+        // Upload: On image
+        private void onImage(Image image)
+        {
+            try
+            {
+                if (image.Width <= this.previewPictureBox.Width && image.Height <= this.previewPictureBox.Height)
+                {
+                    this.previewPictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+                }
+                else
+                {
+                    this.previewPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                this.previewPictureBox.Image = image;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can not set image in preview box. Exception: " + ex.Message, "Error: Preview");
+            }
+        }
+
+        // UI: Start upload
+        private void uiStartUpload()
+        {
+            this.captureButton.Enabled = false;
+            this.uploadProgressBar.Style = ProgressBarStyle.Marquee;
+            this.uploadProgressBar.MarqueeAnimationSpeed = 15;
+            this.AllowDrop = false;
+        }
+
+        // UI: Finish upload
+        private void uiFinishUpload()
+        {
             this.captureButton.Enabled = true;
             this.uploadProgressBar.MarqueeAnimationSpeed = 0;
             this.uploadProgressBar.Style = ProgressBarStyle.Blocks;
+            this.AllowDrop = true;
 
             // Flash form if it is not active
             if (!this.Focused)
@@ -98,29 +137,8 @@ namespace App
                 return;
             }
 
-            try
-            {
-                Image cloneImage = (Image)image.Clone();
-                if (cloneImage.Width <= this.previewPictureBox.Width && cloneImage.Height <= this.previewPictureBox.Height)
-                {
-                    this.previewPictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-                }
-                else
-                {
-                    this.previewPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                }
-                this.previewPictureBox.Image = cloneImage;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Can not set image in preview box. Exception: " + ex.Message, "Error: Preview");
-            }
-
-            this.uploadService.doRequestAsync(image);
-
-            this.captureButton.Enabled = false;
-            this.uploadProgressBar.Style = ProgressBarStyle.Marquee;
-            this.uploadProgressBar.MarqueeAnimationSpeed = 15;
+            this.uiStartUpload();
+            this.uploadService.uploadImageAsync(image);
         }
 
         // Listbox key up event
@@ -248,7 +266,7 @@ namespace App
         }
 
         // Copy selected items to clipboard
-        void imageListBoxCopySelectedToClipboard(MenuCopyAs copyAs = MenuCopyAs.Text)
+        private void imageListBoxCopySelectedToClipboard(MenuCopyAs copyAs = MenuCopyAs.Text)
         {
             int count = imageListBox.SelectedItems.Count;
 
@@ -304,16 +322,42 @@ namespace App
             }
             catch (Exception ex)
             {
-                MessageBox.Show("It looks like another application on your machine might be locking the clipboard. Exception: " + ex.Message, "Error: Clipboard");
+                MessageBox.Show("It looks like another application on your machine might be locking the clipboard. "
+                    + "Exception: " + ex.Message, "Error: Clipboard");
             }
         }
 
         // Remove selected items
-        void imageListBoxRemoveSelected()
+        private void imageListBoxRemoveSelected()
         {
             for (int i = this.imageListBox.SelectedItems.Count - 1; i >= 0; i--)
             {
                 this.imageListBox.Items.Remove(this.imageListBox.SelectedItems[i]);
+            }
+        }
+
+        // Drop files event
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            List<Models.ImageFile> images = Helpers.FindImage.find(droppedFiles);
+
+            if (images.Count == 0)
+            {
+                return;
+            }
+
+            this.uiStartUpload();
+            this.uploadService.uploadImageFilesAsync(images);
+        }
+
+        // Accept files by drag and drop
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
             }
         }
     }
