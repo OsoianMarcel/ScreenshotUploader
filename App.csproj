@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <None Include="Resources\actions\open.png" />
     <None Include="Resources\objects\app_logo.png" />
     <None Include="Resources\objects\static_md.png" />
     <None Include="Resources\actions\help.png" />

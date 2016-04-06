@@ -30,22 +30,24 @@
         {
             this.components = new System.ComponentModel.Container();
             this.previewPanel = new System.Windows.Forms.Panel();
-            this.previewPictureBox = new System.Windows.Forms.PictureBox();
             this.uploadProgressBar = new System.Windows.Forms.ProgressBar();
             this.imageListBox = new System.Windows.Forms.ListBox();
             this.imageListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.uploadButton = new System.Windows.Forms.Button();
+            this.helpButton = new System.Windows.Forms.Button();
+            this.settingButton = new System.Windows.Forms.Button();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyAsHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyAsBBCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpButton = new System.Windows.Forms.Button();
-            this.settingButton = new System.Windows.Forms.Button();
             this.captureButton = new System.Windows.Forms.Button();
+            this.previewPictureBox = new System.Windows.Forms.PictureBox();
+            this.uploadOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.previewPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).BeginInit();
             this.imageListContextMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // previewPanel
@@ -58,21 +60,11 @@
             this.previewPanel.Size = new System.Drawing.Size(250, 175);
             this.previewPanel.TabIndex = 0;
             // 
-            // previewPictureBox
-            // 
-            this.previewPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewPictureBox.Image = global::App.Properties.Resources.pixture_box_crop;
-            this.previewPictureBox.Location = new System.Drawing.Point(0, 0);
-            this.previewPictureBox.Name = "previewPictureBox";
-            this.previewPictureBox.Size = new System.Drawing.Size(248, 173);
-            this.previewPictureBox.TabIndex = 0;
-            this.previewPictureBox.TabStop = false;
-            // 
             // uploadProgressBar
             // 
             this.uploadProgressBar.Location = new System.Drawing.Point(12, 192);
             this.uploadProgressBar.Name = "uploadProgressBar";
-            this.uploadProgressBar.Size = new System.Drawing.Size(504, 10);
+            this.uploadProgressBar.Size = new System.Drawing.Size(532, 10);
             this.uploadProgressBar.TabIndex = 1;
             // 
             // imageListBox
@@ -82,7 +74,7 @@
             this.imageListBox.Location = new System.Drawing.Point(268, 41);
             this.imageListBox.Name = "imageListBox";
             this.imageListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.imageListBox.Size = new System.Drawing.Size(248, 147);
+            this.imageListBox.Size = new System.Drawing.Size(276, 147);
             this.imageListBox.TabIndex = 2;
             this.imageListBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.imageListBox_KeyUp);
             this.imageListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.imageListBox_MouseDoubleClick);
@@ -100,6 +92,43 @@
             this.imageListContextMenuStrip.Name = "imageListContextMenuStrip";
             this.imageListContextMenuStrip.Size = new System.Drawing.Size(212, 120);
             this.imageListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.imageListContextMenuStrip_Opening);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(208, 6);
+            // 
+            // uploadButton
+            // 
+            this.uploadButton.Image = global::App.Properties.Resources.open;
+            this.uploadButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uploadButton.Location = new System.Drawing.Point(377, 13);
+            this.uploadButton.Name = "uploadButton";
+            this.uploadButton.Size = new System.Drawing.Size(103, 22);
+            this.uploadButton.TabIndex = 5;
+            this.uploadButton.Text = "Upload images";
+            this.uploadButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uploadButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
+            // 
+            // helpButton
+            // 
+            this.helpButton.Image = global::App.Properties.Resources.help;
+            this.helpButton.Location = new System.Drawing.Point(518, 13);
+            this.helpButton.Name = "helpButton";
+            this.helpButton.Size = new System.Drawing.Size(26, 23);
+            this.helpButton.TabIndex = 4;
+            this.helpButton.UseVisualStyleBackColor = true;
+            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
+            // 
+            // settingButton
+            // 
+            this.settingButton.Image = global::App.Properties.Resources.legend;
+            this.settingButton.Location = new System.Drawing.Point(486, 13);
+            this.settingButton.Name = "settingButton";
+            this.settingButton.Size = new System.Drawing.Size(26, 23);
+            this.settingButton.TabIndex = 3;
+            this.settingButton.Click += new System.EventHandler(this.settingButton_Click);
             // 
             // copyToolStripMenuItem
             // 
@@ -137,11 +166,6 @@
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(208, 6);
-            // 
             // selectAllToolStripMenuItem
             // 
             this.selectAllToolStripMenuItem.Image = global::App.Properties.Resources.html_balance_braces;
@@ -151,44 +175,42 @@
             this.selectAllToolStripMenuItem.Text = "Select All";
             this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
             // 
-            // helpButton
-            // 
-            this.helpButton.Image = global::App.Properties.Resources.help;
-            this.helpButton.Location = new System.Drawing.Point(492, 12);
-            this.helpButton.Name = "helpButton";
-            this.helpButton.Size = new System.Drawing.Size(24, 23);
-            this.helpButton.TabIndex = 4;
-            this.helpButton.UseVisualStyleBackColor = true;
-            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
-            // 
-            // settingButton
-            // 
-            this.settingButton.Image = global::App.Properties.Resources.legend;
-            this.settingButton.Location = new System.Drawing.Point(267, 12);
-            this.settingButton.Name = "settingButton";
-            this.settingButton.Size = new System.Drawing.Size(24, 23);
-            this.settingButton.TabIndex = 3;
-            this.settingButton.UseVisualStyleBackColor = true;
-            this.settingButton.Click += new System.EventHandler(this.settingButton_Click);
-            // 
             // captureButton
             // 
             this.captureButton.Image = global::App.Properties.Resources.app_window;
-            this.captureButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.captureButton.Location = new System.Drawing.Point(297, 12);
+            this.captureButton.Location = new System.Drawing.Point(268, 12);
             this.captureButton.Name = "captureButton";
-            this.captureButton.Size = new System.Drawing.Size(189, 23);
+            this.captureButton.Size = new System.Drawing.Size(103, 23);
             this.captureButton.TabIndex = 0;
-            this.captureButton.Text = "Capture screen and upload";
+            this.captureButton.Text = "Capture screen";
+            this.captureButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.captureButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.captureButton.UseVisualStyleBackColor = true;
             this.captureButton.Click += new System.EventHandler(this.captureButton_Click);
+            // 
+            // previewPictureBox
+            // 
+            this.previewPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.previewPictureBox.Image = global::App.Properties.Resources.pixture_box_crop;
+            this.previewPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.previewPictureBox.Name = "previewPictureBox";
+            this.previewPictureBox.Size = new System.Drawing.Size(248, 173);
+            this.previewPictureBox.TabIndex = 0;
+            this.previewPictureBox.TabStop = false;
+            // 
+            // uploadOpenFileDialog
+            // 
+            this.uploadOpenFileDialog.Multiselect = true;
+            this.uploadOpenFileDialog.Title = "Upload images";
+            this.uploadOpenFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.uploadOpenFileDialog_FileOk);
             // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(527, 211);
+            this.ClientSize = new System.Drawing.Size(556, 211);
+            this.Controls.Add(this.uploadButton);
             this.Controls.Add(this.helpButton);
             this.Controls.Add(this.settingButton);
             this.Controls.Add(this.imageListBox);
@@ -202,8 +224,8 @@
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
             this.previewPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).EndInit();
             this.imageListContextMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -224,5 +246,7 @@
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Button helpButton;
+        private System.Windows.Forms.Button uploadButton;
+        private System.Windows.Forms.OpenFileDialog uploadOpenFileDialog;
     }
 }

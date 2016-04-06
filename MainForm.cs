@@ -42,6 +42,9 @@ namespace App
             this.uploadService.onComplete(new Service.Upload.CompleteCallback(() => this.Invoke(new OnCompleteDelegate(this.onComplete))));
             this.uploadService.onImage(new Service.Upload.ImageCallback((Image image) => this.Invoke(new OnImageDelegate(this.onImage), image)));
 
+            // Set open file dialog filter
+            this.uploadOpenFileDialog.Filter = this.generateOpenFileDialogFilterByAcceptedExtensions();
+
             // Append app version to main form
             this.Text += " | " + Application.ProductVersion;
         }
@@ -105,6 +108,7 @@ namespace App
         private void uiStartUpload()
         {
             this.captureButton.Enabled = false;
+            this.uploadButton.Enabled = false;
             this.uploadProgressBar.Style = ProgressBarStyle.Marquee;
             this.uploadProgressBar.MarqueeAnimationSpeed = 15;
             this.AllowDrop = false;
@@ -114,6 +118,7 @@ namespace App
         private void uiFinishUpload()
         {
             this.captureButton.Enabled = true;
+            this.uploadButton.Enabled = true;
             this.uploadProgressBar.MarqueeAnimationSpeed = 0;
             this.uploadProgressBar.Style = ProgressBarStyle.Blocks;
             this.AllowDrop = true;
@@ -359,6 +364,41 @@ namespace App
             {
                 e.Effect = DragDropEffects.Copy;
             }
+        }
+
+        // Click upload button
+        private void uploadButton_Click(object sender, EventArgs e)
+        {
+            this.uploadOpenFileDialog.ShowDialog();
+        }
+
+        // Generat open file dialog filter by eccepted extensions
+        private string generateOpenFileDialogFilterByAcceptedExtensions()
+        {
+            string filter = "Image files|";
+
+            string lastExtenstion = Helpers.Global.acceptedImageExtensions.Last();
+            foreach (string extension in Helpers.Global.acceptedImageExtensions)
+            {
+                filter += "*." + extension
+                    + (!extension.Equals(lastExtenstion) ? "; " : "");
+            }
+
+            return filter;
+        }
+
+        // Image files are selected
+        private void uploadOpenFileDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            List<Models.ImageFile> images = Helpers.FindImage.find(this.uploadOpenFileDialog.FileNames);
+
+            if (images.Count == 0)
+            {
+                return;
+            }
+
+            this.uiStartUpload();
+            this.uploadService.uploadImageFilesAsync(images);
         }
     }
 }
