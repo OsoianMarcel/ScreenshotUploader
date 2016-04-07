@@ -54,6 +54,17 @@ namespace App
             this.Text += " | " + Application.ProductVersion;
         }
 
+        // Override: WndProc
+        protected override void WndProc(ref Message message)
+        {
+            if (message.Msg == Helpers.SingleInstance.WM_ACTIVATE_ME)
+            {
+                this.Activate();
+            }
+
+            base.WndProc(ref message);
+        }
+
         // Upload: On success
         private void onSuccess(Models.StaticMd.Image image)
         {

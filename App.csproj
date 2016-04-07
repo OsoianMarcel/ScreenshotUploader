@@ -72,6 +72,7 @@
     <Compile Include="Helpers\KeyboardHook\KeyPressedEventArgs.cs" />
     <Compile Include="Helpers\KeyboardHook\ModifierKeys.cs" />
     <Compile Include="Helpers\MimeType.cs" />
+    <Compile Include="Helpers\SingleInstance.cs" />
     <Compile Include="Helpers\Thread.cs" />
     <Compile Include="HelpForm.cs">
       <SubType>Form</SubType>
