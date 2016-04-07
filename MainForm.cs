@@ -150,12 +150,15 @@ namespace App
             this.uploadProgressBar.MarqueeAnimationSpeed = 0;
             this.uploadProgressBar.Style = ProgressBarStyle.Blocks;
             this.AllowDrop = true;
-            this.Visible = true;
 
-            // Flash form if it is not active
-            if (!this.Focused)
+            // Flash form if app is not activated
+            if (!Helpers.App.isActivated())
             {
                 Helpers.FlashWindow.Flash(this);
+
+                this.mainNotifyIcon.BalloonTipTitle = "Upload complete";
+                this.mainNotifyIcon.BalloonTipText = "Check the list";
+                this.mainNotifyIcon.ShowBalloonTip(3000);
             }
         }
 
@@ -195,7 +198,7 @@ namespace App
                 return;
             }
 
-            if (!e.Control)
+            if (e.Control)
             {
                 switch (e.KeyCode)
                 {
@@ -492,6 +495,13 @@ namespace App
         private void showHideToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.mainNotifyIcon_DoubleClick(this.mainNotifyIcon, new EventArgs());
+        }
+
+        // Tray menu: Ballon click
+        private void mainNotifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            this.Visible = true;
+            this.Activate();
         }
     }
 }

@@ -47,8 +47,9 @@
             this.uploadOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.notifyContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showHideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.previewPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).BeginInit();
             this.imageListContextMenuStrip.SuspendLayout();
@@ -165,7 +166,7 @@
             this.uploadButton.Location = new System.Drawing.Point(377, 13);
             this.uploadButton.Name = "uploadButton";
             this.uploadButton.Size = new System.Drawing.Size(103, 22);
-            this.uploadButton.TabIndex = 5;
+            this.uploadButton.TabIndex = 1;
             this.uploadButton.Text = "Upload images";
             this.uploadButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.uploadButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -211,19 +212,26 @@
             // 
             // mainNotifyIcon
             // 
-            this.mainNotifyIcon.BalloonTipText = "tipText";
-            this.mainNotifyIcon.BalloonTipTitle = "tipTitle";
             this.mainNotifyIcon.ContextMenuStrip = this.notifyContextMenuStrip;
             this.mainNotifyIcon.Text = "MainNotifyIcon";
+            this.mainNotifyIcon.BalloonTipClicked += new System.EventHandler(this.mainNotifyIcon_BalloonTipClicked);
             this.mainNotifyIcon.DoubleClick += new System.EventHandler(this.mainNotifyIcon_DoubleClick);
             // 
             // notifyContextMenuStrip
             // 
             this.notifyContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showHideToolStripMenuItem,
+            this.toolStripSeparator2,
             this.exitToolStripMenuItem});
             this.notifyContextMenuStrip.Name = "notifyContextMenuStrip";
-            this.notifyContextMenuStrip.Size = new System.Drawing.Size(153, 70);
+            this.notifyContextMenuStrip.Size = new System.Drawing.Size(134, 54);
+            // 
+            // showHideToolStripMenuItem
+            // 
+            this.showHideToolStripMenuItem.Name = "showHideToolStripMenuItem";
+            this.showHideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showHideToolStripMenuItem.Text = "Show/Hide";
+            this.showHideToolStripMenuItem.Click += new System.EventHandler(this.showHideToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -232,12 +240,10 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // showHideToolStripMenuItem
+            // toolStripSeparator2
             // 
-            this.showHideToolStripMenuItem.Name = "showHideToolStripMenuItem";
-            this.showHideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.showHideToolStripMenuItem.Text = "Show/Hide";
-            this.showHideToolStripMenuItem.Click += new System.EventHandler(this.showHideToolStripMenuItem_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // MainForm
             // 
@@ -289,5 +295,6 @@
         private System.Windows.Forms.ContextMenuStrip notifyContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showHideToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
