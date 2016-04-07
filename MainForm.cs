@@ -18,12 +18,16 @@ namespace App
         private delegate void OnCompleteDelegate();
         private delegate void OnImageDelegate(Image image);
 
+        // Copy as methods
         private enum MenuCopyAs { Text, BBCode, HTML }
 
+        // App settings
         private App.Properties.Settings appSettings;
 
+        // Upload service instance
         private Service.Upload uploadService;
 
+        // Ctrl+PrtScr keyboard instance
         private Helpers.KeyboardHook.KeyboardHook hookKeyCtrlPrtScr = new Helpers.KeyboardHook.KeyboardHook();
 
         // Constructor
@@ -36,6 +40,9 @@ namespace App
 
             // Set form icon
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+
+            // Set tray icon
+            this.mainNotifyIcon.Icon = this.Icon;
 
             // Init upload service
             this.uploadService = new Service.Upload();
@@ -149,9 +156,19 @@ namespace App
         // Click capture and upload button
         private void captureButton_Click(object sender, EventArgs e)
         {
+            // Check if snip form is not already opened
+            if (Helpers.Global.isSnipFormOpened)
+            {
+                return;
+            }
+
+            Helpers.Global.isSnipFormOpened = true;
+
             this.Visible = false;
             Image image = SnippingToolForm.Snip();
             this.Visible = true;
+
+            Helpers.Global.isSnipFormOpened = false;
 
             if (image == null)
             {
@@ -391,13 +408,13 @@ namespace App
             this.uploadOpenFileDialog.ShowDialog();
         }
 
-        // Generat open file dialog filter by eccepted extensions
+        // Generat open file dialog filter by accepted extensions
         private string generateOpenFileDialogFilterByAcceptedExtensions()
         {
             string filter = "Image files|";
 
-            string lastExtenstion = Helpers.Global.acceptedImageExtensions.Last();
-            foreach (string extension in Helpers.Global.acceptedImageExtensions)
+            string lastExtenstion = Config.acceptedImageExtensions.Last();
+            foreach (string extension in Config.acceptedImageExtensions)
             {
                 filter += "*." + extension
                     + (!extension.Equals(lastExtenstion) ? "; " : "");
@@ -440,12 +457,6 @@ namespace App
         // Global hot key Ctrl+PrtScr is pressed
         private void hotKeyCtrlPrtScr_KeyPressed(object sender, Helpers.KeyboardHook.KeyPressedEventArgs e)
         {
-            // Check if snip form is not already opened
-            if (!this.Visible)
-            {
-                return;
-            }
-
             // Activate main form
             this.Activate();
 

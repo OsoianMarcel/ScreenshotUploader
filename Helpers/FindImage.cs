@@ -43,7 +43,7 @@ namespace App.Helpers
         // Check if image is accepted by extension
         private static bool isExtensionAccepted(string extension)
         {
-            return Global.acceptedImageExtensions.Contains(extension);
+            return Config.acceptedImageExtensions.Contains(extension);
         }
 
         // Get file extension (lowercase)

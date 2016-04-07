@@ -24,6 +24,8 @@ namespace App.Service
         private event CompleteCallback completeCallback;
         private event ImageCallback imageCallback;
 
+        public bool isBusy { get; private set; }
+
         // Add success callback
         public void onSuccess(SuccessCallback callback)
         {
@@ -71,10 +73,11 @@ namespace App.Service
             this.detectThreadWork(imageFiles);
         }
 
-
         // Detect Image
         private void detectThreadWork(Image image)
         {
+            this.isBusy = true;
+
             List<Models.ImageUpload> imageUploads = new List<Models.ImageUpload>();
 
             Models.ImageUpload imageUpload = new Models.ImageUpload();
@@ -93,6 +96,8 @@ namespace App.Service
         // Detect ImageFile
         private void detectThreadWork(List<Models.ImageFile> imageFiles)
         {
+            this.isBusy = true;
+
             List<Models.ImageUpload> imageUploads = new List<Models.ImageUpload>();
 
             foreach (Models.ImageFile imageFile in imageFiles)
@@ -157,6 +162,8 @@ namespace App.Service
                 {
                     this.completeCallback();
                 }
+
+                this.isBusy = false;
             }
         }
 
@@ -184,7 +191,7 @@ namespace App.Service
             request.ContentType = "multipart/form-data; boundary=" + boundary;
             request.ContentLength = postFieldsBytes.Length + imageUpload.bytes.Length + endBoundaryBytes.Length;
 
-            request.UserAgent = Helpers.Global.userAgent;
+            request.UserAgent = Config.userAgent;
             request.Accept = "application/json";
             request.Headers.Add("Accept-Language", "en");
 
@@ -223,7 +230,7 @@ namespace App.Service
             request.ContentType = "application/x-www-form-urlencoded";
             request.ContentLength = data.Length;
 
-            request.UserAgent = Helpers.Global.userAgent;
+            request.UserAgent = Config.userAgent;
             request.Accept = "application/json";
             request.Headers.Add("Accept-Language", "en");
 

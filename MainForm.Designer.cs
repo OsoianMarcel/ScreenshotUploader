@@ -45,6 +45,7 @@
             this.settingButton = new System.Windows.Forms.Button();
             this.captureButton = new System.Windows.Forms.Button();
             this.uploadOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.mainNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.previewPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).BeginInit();
             this.imageListContextMenuStrip.SuspendLayout();
@@ -204,6 +205,12 @@
             this.uploadOpenFileDialog.Title = "Upload images";
             this.uploadOpenFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.uploadOpenFileDialog_FileOk);
             // 
+            // mainNotifyIcon
+            // 
+            this.mainNotifyIcon.BalloonTipText = "tipText";
+            this.mainNotifyIcon.BalloonTipTitle = "tipTitle";
+            this.mainNotifyIcon.Text = "MainNotifyIcon";
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -249,5 +256,6 @@
         private System.Windows.Forms.Button helpButton;
         private System.Windows.Forms.Button uploadButton;
         private System.Windows.Forms.OpenFileDialog uploadOpenFileDialog;
+        private System.Windows.Forms.NotifyIcon mainNotifyIcon;
     }
 }
