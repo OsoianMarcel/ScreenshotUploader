@@ -46,9 +46,13 @@
             this.captureButton = new System.Windows.Forms.Button();
             this.uploadOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notifyContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showHideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.previewPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).BeginInit();
             this.imageListContextMenuStrip.SuspendLayout();
+            this.notifyContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // previewPanel
@@ -209,7 +213,31 @@
             // 
             this.mainNotifyIcon.BalloonTipText = "tipText";
             this.mainNotifyIcon.BalloonTipTitle = "tipTitle";
+            this.mainNotifyIcon.ContextMenuStrip = this.notifyContextMenuStrip;
             this.mainNotifyIcon.Text = "MainNotifyIcon";
+            this.mainNotifyIcon.DoubleClick += new System.EventHandler(this.mainNotifyIcon_DoubleClick);
+            // 
+            // notifyContextMenuStrip
+            // 
+            this.notifyContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showHideToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.notifyContextMenuStrip.Name = "notifyContextMenuStrip";
+            this.notifyContextMenuStrip.Size = new System.Drawing.Size(153, 70);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // showHideToolStripMenuItem
+            // 
+            this.showHideToolStripMenuItem.Name = "showHideToolStripMenuItem";
+            this.showHideToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showHideToolStripMenuItem.Text = "Show/Hide";
+            this.showHideToolStripMenuItem.Click += new System.EventHandler(this.showHideToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -234,6 +262,7 @@
             this.previewPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).EndInit();
             this.imageListContextMenuStrip.ResumeLayout(false);
+            this.notifyContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -257,5 +286,8 @@
         private System.Windows.Forms.Button uploadButton;
         private System.Windows.Forms.OpenFileDialog uploadOpenFileDialog;
         private System.Windows.Forms.NotifyIcon mainNotifyIcon;
+        private System.Windows.Forms.ContextMenuStrip notifyContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showHideToolStripMenuItem;
     }
 }

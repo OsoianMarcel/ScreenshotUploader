@@ -43,6 +43,7 @@ namespace App
 
             // Set tray icon
             this.mainNotifyIcon.Icon = this.Icon;
+            this.mainNotifyIcon.Visible = true;
 
             // Init upload service
             this.uploadService = new Service.Upload();
@@ -61,16 +62,19 @@ namespace App
             this.Text += " | " + Application.ProductVersion;
         }
 
-        // Override: WndProc
+
+        // Override: WndProc and receive WM_ACTIVATE_ME message
         protected override void WndProc(ref Message message)
         {
             if (message.Msg == Helpers.SingleInstance.WM_ACTIVATE_ME)
             {
+                this.Visible = true;
                 this.Activate();
             }
 
             base.WndProc(ref message);
         }
+
 
         // Upload: On success
         private void onSuccess(Models.StaticMd.Image image)
@@ -127,6 +131,7 @@ namespace App
             }
         }
 
+
         // UI: Start upload
         private void uiStartUpload()
         {
@@ -145,6 +150,7 @@ namespace App
             this.uploadProgressBar.MarqueeAnimationSpeed = 0;
             this.uploadProgressBar.Style = ProgressBarStyle.Blocks;
             this.AllowDrop = true;
+            this.Visible = true;
 
             // Flash form if it is not active
             if (!this.Focused)
@@ -152,6 +158,7 @@ namespace App
                 Helpers.FlashWindow.Flash(this);
             }
         }
+
 
         // Click capture and upload button
         private void captureButton_Click(object sender, EventArgs e)
@@ -462,6 +469,29 @@ namespace App
 
             // Call capture button click
             this.captureButton_Click(this.captureButton, new EventArgs());
+        }
+
+
+        // Tray menu: Exit
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        // Tray menu: Double click
+        private void mainNotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            this.Visible = !this.Visible;
+            if (this.Visible)
+            {
+                this.Activate();
+            }
+        }
+
+        // Tray menu: Show/Hide
+        private void showHideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.mainNotifyIcon_DoubleClick(this.mainNotifyIcon, new EventArgs());
         }
     }
 }
