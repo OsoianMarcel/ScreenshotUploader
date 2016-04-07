@@ -24,6 +24,8 @@ namespace App
 
         private Service.Upload uploadService;
 
+        private Helpers.KeyboardHook.KeyboardHook hookKeyCtrlPrtScr = new Helpers.KeyboardHook.KeyboardHook();
+
         // Constructor
         public MainForm()
         {
@@ -44,6 +46,9 @@ namespace App
 
             // Set open file dialog filter
             this.uploadOpenFileDialog.Filter = this.generateOpenFileDialogFilterByAcceptedExtensions();
+
+            // Register global hot keys
+            this.registerGlobalHotKeys();
 
             // Append app version to main form
             this.Text += " | " + Application.ProductVersion;
@@ -149,30 +154,33 @@ namespace App
         // Listbox key up event
         private void imageListBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (!e.Control)
+            if (e.KeyCode == Keys.Delete)
             {
+                this.imageListBoxRemoveSelected();
                 return;
             }
 
-            switch (e.KeyCode)
+            if (!e.Control)
             {
-                case Keys.C:
-                    this.imageListBoxCopySelectedToClipboard();
-                    break;
-                case Keys.B:
-                    this.imageListBoxCopySelectedToClipboard(MenuCopyAs.BBCode);
-                    break;
-                case Keys.H:
-                    this.imageListBoxCopySelectedToClipboard(MenuCopyAs.HTML);
-                    break;
-                case Keys.D:
-                    this.imageListBoxRemoveSelected();
-                    break;
-                case Keys.A:
-                    this.imageListBoxSelectAll();
-                    break;
+                switch (e.KeyCode)
+                {
+                    case Keys.C:
+                        this.imageListBoxCopySelectedToClipboard();
+                        break;
+                    case Keys.B:
+                        this.imageListBoxCopySelectedToClipboard(MenuCopyAs.BBCode);
+                        break;
+                    case Keys.H:
+                        this.imageListBoxCopySelectedToClipboard(MenuCopyAs.HTML);
+                        break;
+                    case Keys.D:
+                        this.imageListBoxRemoveSelected();
+                        break;
+                    case Keys.A:
+                        this.imageListBoxSelectAll();
+                        break;
+                }
             }
-
         }
 
         // Listbox mouse up event
@@ -399,6 +407,39 @@ namespace App
 
             this.uiStartUpload();
             this.uploadService.uploadImageFilesAsync(images);
+        }
+
+        // Register global hot keys
+        private void registerGlobalHotKeys()
+        {
+            try
+            {
+                // Register the Ctrl+PrtScr combination as hot key
+                this.hookKeyCtrlPrtScr.KeyPressed +=
+                    new EventHandler<Helpers.KeyboardHook.KeyPressedEventArgs>(hotKeyCtrlPrtScr_KeyPressed);
+                this.hookKeyCtrlPrtScr.RegisterHotKey(Helpers.KeyboardHook.ModifierKeys.Control, Keys.PrintScreen);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can not register global hotkeys. "
+                    + "Exception: " + ex.Message, "Error: Global hot keys");
+            }
+        }
+
+        // Global hot key Ctrl+PrtScr is pressed
+        private void hotKeyCtrlPrtScr_KeyPressed(object sender, Helpers.KeyboardHook.KeyPressedEventArgs e)
+        {
+            // Check if snip form is not already opened
+            if (!this.Visible)
+            {
+                return;
+            }
+
+            // Activate main form
+            this.Activate();
+
+            // Call capture button click
+            this.captureButton_Click(this.captureButton, new EventArgs());
         }
     }
 }

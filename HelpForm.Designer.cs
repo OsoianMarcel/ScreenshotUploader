@@ -271,6 +271,7 @@
             this.Controls.Add(this.thanksGroupBox);
             this.Controls.Add(this.generalGroupBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
             this.Name = "HelpForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";

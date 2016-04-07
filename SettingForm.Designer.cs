@@ -30,11 +30,11 @@
         {
             this.copyImageUrlCheckBox = new System.Windows.Forms.CheckBox();
             this.logUrlsGroupBox = new System.Windows.Forms.GroupBox();
-            this.generalGroupBox = new System.Windows.Forms.GroupBox();
-            this.logUrlsCheckBox = new System.Windows.Forms.CheckBox();
-            this.logUrlsSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.logUrlsPathTextBox = new System.Windows.Forms.TextBox();
             this.logUrlsSaveDialogButton = new System.Windows.Forms.Button();
+            this.logUrlsPathTextBox = new System.Windows.Forms.TextBox();
+            this.logUrlsCheckBox = new System.Windows.Forms.CheckBox();
+            this.generalGroupBox = new System.Windows.Forms.GroupBox();
+            this.logUrlsSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.logUrlsGroupBox.SuspendLayout();
             this.generalGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -61,32 +61,16 @@
             this.logUrlsGroupBox.TabStop = false;
             this.logUrlsGroupBox.Text = "Log URLs";
             // 
-            // generalGroupBox
+            // logUrlsSaveDialogButton
             // 
-            this.generalGroupBox.Controls.Add(this.copyImageUrlCheckBox);
-            this.generalGroupBox.Location = new System.Drawing.Point(12, 12);
-            this.generalGroupBox.Name = "generalGroupBox";
-            this.generalGroupBox.Size = new System.Drawing.Size(319, 43);
-            this.generalGroupBox.TabIndex = 2;
-            this.generalGroupBox.TabStop = false;
-            this.generalGroupBox.Text = "General";
-            // 
-            // logUrlsCheckBox
-            // 
-            this.logUrlsCheckBox.AutoSize = true;
-            this.logUrlsCheckBox.Location = new System.Drawing.Point(12, 19);
-            this.logUrlsCheckBox.Name = "logUrlsCheckBox";
-            this.logUrlsCheckBox.Size = new System.Drawing.Size(135, 17);
-            this.logUrlsCheckBox.TabIndex = 0;
-            this.logUrlsCheckBox.Text = "Save image URL to file";
-            this.logUrlsCheckBox.UseVisualStyleBackColor = true;
-            this.logUrlsCheckBox.CheckedChanged += new System.EventHandler(this.logUrlscheckBox_CheckedChanged);
-            // 
-            // logUrlsSaveFileDialog
-            // 
-            this.logUrlsSaveFileDialog.Filter = "Text|*.txt|All files|*.*";
-            this.logUrlsSaveFileDialog.Title = "Set log file";
-            this.logUrlsSaveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.logUrlsSaveFileDialog_FileOk);
+            this.logUrlsSaveDialogButton.Enabled = false;
+            this.logUrlsSaveDialogButton.Location = new System.Drawing.Point(238, 40);
+            this.logUrlsSaveDialogButton.Name = "logUrlsSaveDialogButton";
+            this.logUrlsSaveDialogButton.Size = new System.Drawing.Size(75, 22);
+            this.logUrlsSaveDialogButton.TabIndex = 2;
+            this.logUrlsSaveDialogButton.Text = "Choose file";
+            this.logUrlsSaveDialogButton.UseVisualStyleBackColor = true;
+            this.logUrlsSaveDialogButton.Click += new System.EventHandler(this.logUrlsSaveDialogButton_Click);
             // 
             // logUrlsPathTextBox
             // 
@@ -99,16 +83,32 @@
             this.logUrlsPathTextBox.TabIndex = 1;
             this.logUrlsPathTextBox.Click += new System.EventHandler(this.logUrlsPathTextBox_Click);
             // 
-            // logUrlsSaveDialogButton
+            // logUrlsCheckBox
             // 
-            this.logUrlsSaveDialogButton.Enabled = false;
-            this.logUrlsSaveDialogButton.Location = new System.Drawing.Point(238, 40);
-            this.logUrlsSaveDialogButton.Name = "logUrlsSaveDialogButton";
-            this.logUrlsSaveDialogButton.Size = new System.Drawing.Size(75, 22);
-            this.logUrlsSaveDialogButton.TabIndex = 2;
-            this.logUrlsSaveDialogButton.Text = "Choose file";
-            this.logUrlsSaveDialogButton.UseVisualStyleBackColor = true;
-            this.logUrlsSaveDialogButton.Click += new System.EventHandler(this.logUrlsSaveDialogButton_Click);
+            this.logUrlsCheckBox.AutoSize = true;
+            this.logUrlsCheckBox.Location = new System.Drawing.Point(12, 19);
+            this.logUrlsCheckBox.Name = "logUrlsCheckBox";
+            this.logUrlsCheckBox.Size = new System.Drawing.Size(135, 17);
+            this.logUrlsCheckBox.TabIndex = 0;
+            this.logUrlsCheckBox.Text = "Save image URL to file";
+            this.logUrlsCheckBox.UseVisualStyleBackColor = true;
+            this.logUrlsCheckBox.CheckedChanged += new System.EventHandler(this.logUrlscheckBox_CheckedChanged);
+            // 
+            // generalGroupBox
+            // 
+            this.generalGroupBox.Controls.Add(this.copyImageUrlCheckBox);
+            this.generalGroupBox.Location = new System.Drawing.Point(12, 12);
+            this.generalGroupBox.Name = "generalGroupBox";
+            this.generalGroupBox.Size = new System.Drawing.Size(319, 43);
+            this.generalGroupBox.TabIndex = 2;
+            this.generalGroupBox.TabStop = false;
+            this.generalGroupBox.Text = "General";
+            // 
+            // logUrlsSaveFileDialog
+            // 
+            this.logUrlsSaveFileDialog.Filter = "Text|*.txt|All files|*.*";
+            this.logUrlsSaveFileDialog.Title = "Set log file";
+            this.logUrlsSaveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.logUrlsSaveFileDialog_FileOk);
             // 
             // SettingForm
             // 
@@ -118,6 +118,7 @@
             this.Controls.Add(this.generalGroupBox);
             this.Controls.Add(this.logUrlsGroupBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
             this.Name = "SettingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
