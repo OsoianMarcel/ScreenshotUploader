@@ -14,6 +14,9 @@ namespace App.Service
 {
     public class Upload
     {
+        private const string STATIC_UPLOAD_URL = "https://static.md/api/v2/upload/";
+        private const string STATIC_TOKEN_URL = "https://static.md/api/v2/get-token/";
+
         public delegate void SuccessCallback(Models.StaticMd.Image image);
         public delegate void ErrorCallback(string error);
         public delegate void CompleteCallback();
@@ -52,7 +55,12 @@ namespace App.Service
         // Upload image by using separate thread
         public void uploadImageAsync(Image image)
         {
-            ThreadPool.QueueUserWorkItem(q => this.detectThreadWork(image));
+            ThreadStart start = new ThreadStart(() => this.detectThreadWork(image));
+            Thread thread = new Thread(start);
+            thread.IsBackground = true;
+            thread.Start();
+
+            Helpers.Thread.addThread(thread);
         }
 
         // Upload image without separate thread
@@ -64,7 +72,12 @@ namespace App.Service
         // Upload image files by using separate thread
         public void uploadImageFilesAsync(List<Models.ImageFile> imageFiles)
         {
-            ThreadPool.QueueUserWorkItem(q => this.detectThreadWork(imageFiles));
+            ThreadStart start = new ThreadStart(() => this.detectThreadWork(imageFiles));
+            Thread thread = new Thread(start);
+            thread.IsBackground = true;
+            thread.Start();
+
+            Helpers.Thread.addThread(thread);
         }
 
         // Upload image files
@@ -172,7 +185,7 @@ namespace App.Service
         {
             this.sleepBeforeUpload(token);
 
-            var request = (HttpWebRequest)WebRequest.Create("https://static.md/api/v2/upload/");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(STATIC_UPLOAD_URL);
             request.Proxy = null;
 
             const string boundary = "----B0unDAry";
@@ -195,16 +208,16 @@ namespace App.Service
             request.Accept = "application/json";
             request.Headers.Add("Accept-Language", "en");
 
-            using (var stream = request.GetRequestStream())
+            using (Stream stream = request.GetRequestStream())
             {
                 stream.Write(postFieldsBytes, 0, postFieldsBytes.Length);
                 stream.Write(imageUpload.bytes, 0, imageUpload.bytes.Length);
                 stream.Write(endBoundaryBytes, 0, endBoundaryBytes.Length);
             }
 
-            var response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            var jsonResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            string jsonResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
             return parseImage(jsonResponse);
         }
@@ -220,12 +233,12 @@ namespace App.Service
         // Get token
         private Models.StaticMd.Token getToken(string md5)
         {
-            var request = (HttpWebRequest)WebRequest.Create("https://static.md/api/v2/get-token/");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(STATIC_TOKEN_URL);
             request.Proxy = null;
 
-            var postData = "md5=" + Uri.EscapeUriString(md5);
+            string postData = "md5=" + Uri.EscapeUriString(md5);
 
-            var data = Encoding.ASCII.GetBytes(postData);
+            byte[] data = Encoding.ASCII.GetBytes(postData);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             request.ContentLength = data.Length;
@@ -234,14 +247,14 @@ namespace App.Service
             request.Accept = "application/json";
             request.Headers.Add("Accept-Language", "en");
 
-            using (var stream = request.GetRequestStream())
+            using (Stream stream = request.GetRequestStream())
             {
                 stream.Write(data, 0, data.Length);
             }
 
-            var response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            var jsonResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            string jsonResponse = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
             return parseToken(jsonResponse);
         }
